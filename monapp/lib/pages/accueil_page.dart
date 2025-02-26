@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class AccueilPage extends StatefulWidget {
@@ -17,17 +18,40 @@ class AccueilPage extends StatefulWidget {
 }
 
 class _AccueilPageState extends State<AccueilPage> {
-  // Contrôleur pour le PageView
   late PageController _pageController;
+  Timer? _timer; 
 
+  final _numPages = 3; 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 0);
+
+    
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+ 
+      final currentPage = _pageController.page?.round() ?? 0;
+
+      var nextPage = currentPage + 1;
+
+     
+      if (nextPage == _numPages) {
+        nextPage = 0;
+      }
+
+      
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   @override
   void dispose() {
+    // Annuler le timer pour éviter les fuites
+    _timer?.cancel();
     _pageController.dispose();
     super.dispose();
   }

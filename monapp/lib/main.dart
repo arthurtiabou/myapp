@@ -31,16 +31,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Onglet courant (index)
+
   int _selectedIndex = 0;
 
-  // Exemple de solde initial du compte
   double _soldePrincipal = 1500.0;
 
-  // Exemple de solde d’un livret
   double _soldeLivret = 3000.0;
 
-  // Liste de transactions (historique)
   final List<BankTransaction> _transactions = [
     BankTransaction(
       id: 't1',
@@ -58,21 +55,16 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
-  /// Calcule le montant total dépensé ce mois-ci (ou sur les 30 derniers jours).
   double get totalDepenseMois {
     DateTime now = DateTime.now();
     DateTime ilYAMois = DateTime(now.year, now.month - 1, now.day);
-    // Pour simplifier, on prend la date du mois précédent.
-    // Ou on peut filtrer sur le "mois courant" (même year, same month).
     return _transactions
         .where((tx) => tx.date.isAfter(ilYAMois))
         .fold(0.0, (sum, tx) => sum + tx.montant);
   }
 
-  // Méthode pour gérer l’ajout d’un nouveau virement
   void _addVirement(String destinataire, String typeDepense, double montant) {
     setState(() {
-      // Ajout dans l’historique
       _transactions.add(
         BankTransaction(
           id: DateTime.now().toString(),

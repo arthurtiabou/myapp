@@ -33,15 +33,13 @@ class _VirementPageState extends State<VirementPage> {
       final typeDepense = _typeDepenseController.text.trim();
       final montant = double.parse(_montantController.text.trim());
 
-      // On appelle la fonction du parent pour enregistrer le virement
+    
       widget.onVirementEffectue(destinataire, typeDepense, montant);
 
-      // On peut remettre le formulaire à zéro ou pop la page
       _destinataireController.clear();
       _typeDepenseController.clear();
       _montantController.clear();
 
-      // Affichage d'un snackBar ou pop
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Virement effectué avec succès!'),
@@ -79,7 +77,7 @@ class _VirementPageState extends State<VirementPage> {
               ),
               const SizedBox(height: 16),
 
-              // Champs type dépense
+           
               TextFormField(
                 controller: _typeDepenseController,
                 decoration: const InputDecoration(
@@ -95,7 +93,7 @@ class _VirementPageState extends State<VirementPage> {
               ),
               const SizedBox(height: 16),
 
-              // Champs montant
+            
               TextFormField(
                 controller: _montantController,
                 decoration: const InputDecoration(
