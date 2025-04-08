@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/order.dart';
 import 'delivery_detail_page.dart';
 import 'bookings_page.dart';
+import 'history_page.dart';
+import 'profile_page.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
   bool isAvailable = true;
   List<Order> acceptedOrders = [];
+  List<Order> completedOrders = [];
 
   final orders = [
     Order(
@@ -21,48 +25,65 @@ class _HomePageState extends State<HomePage> {
       image: "https://logo.clearbit.com/kfc.com",
       price: 10.0,
       details: "11 Nearby - 4 mins",
+      date: DateTime.now(),
     ),
     Order(
       title: "So French Tacos",
       image: "https://source.unsplash.com/80x80/?tacos",
       price: 25.0,
       details: "3 Nearby - 6 mins",
+      date: DateTime.now(),
     ),
     Order(
       title: "Mc Donald",
       image: "https://logo.clearbit.com/mcdonalds.com",
       price: 17.0,
       details: "7 Nearby - 5 mins",
+      date: DateTime.now(),
     ),
     Order(
       title: "Burger King",
       image: "https://logo.clearbit.com/bk.com",
       price: 18.0,
       details: "5 Nearby - 7 mins",
+      date: DateTime.now(),
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
-      _buildHomePage(),
-      BookingsPage(acceptedOrders: acceptedOrders),
-      const Center(child: Text("Profil")),
-    ];
+    _buildHomePage(),
+    BookingsPage(
+      acceptedOrders: acceptedOrders,
+      onComplete: (Order order) {
+        setState(() {
+          acceptedOrders.remove(order);
+          order.status = OrderStatus.livree;
+          completedOrders.add(order);
+        });
+      },
+    ),
+    HistoryPage(completedOrders: completedOrders),
+    const ProfilePage(), // 👈 AJOUT ICI
+  ];
+
 
     return Scaffold(
       body: pages[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: (index) => setState(() => selectedIndex = index),
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.black,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: "Bookings"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
-      ),
+      currentIndex: selectedIndex,
+      onTap: (index) => setState(() => selectedIndex = index),
+      selectedItemColor: Colors.green,
+      unselectedItemColor: Colors.black,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        BottomNavigationBarItem(icon: Icon(Icons.book), label: "Bookings"),
+        BottomNavigationBarItem(icon: Icon(Icons.history), label: "Historique"),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"), // ✅ ce 4e item est crucial
+  ],
+),
+
     );
   }
 
@@ -173,4 +194,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
+} 

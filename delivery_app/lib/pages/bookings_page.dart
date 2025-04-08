@@ -3,8 +3,13 @@ import '../models/order.dart';
 
 class BookingsPage extends StatelessWidget {
   final List<Order> acceptedOrders;
+  final Function(Order) onComplete; // 👈 Ajout ici
 
-  const BookingsPage({super.key, required this.acceptedOrders});
+  const BookingsPage({
+    super.key,
+    required this.acceptedOrders,
+    required this.onComplete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,12 @@ class BookingsPage extends StatelessWidget {
                     ),
                     title: Text(order.title, style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(order.details),
-                    trailing: Text("\$${order.price}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        onComplete(order); // 👈 Appel du callback pour marquer comme livrée
+                      },
+                      child: const Text("Livrée"),
+                    ),
                   ),
                 );
               },
