@@ -1,11 +1,10 @@
+// 📁 lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'pages/home_page.dart';
+import 'pages/login_page.dart';
+import 'pages/admin_page.dart';
+import 'pages/home_page.dart'; // ta page de livreur
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('fr_FR', null); // 🔥 Initialisation de la locale FR
+void main() {
   runApp(const MyApp());
 }
 
@@ -21,17 +20,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         primarySwatch: Colors.green,
       ),
-      locale: const Locale('fr'), // 📍 Locale par défaut
-      supportedLocales: const [
-        Locale('fr'),
-        Locale('en'),
-      ],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      home: const HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginPage(),
+        '/home': (context) => const HomePage(),
+        '/admin': (context) => const AdminPage(),
+      },
     );
   }
 }
